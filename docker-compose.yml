@@ -1,0 +1,21 @@
+version: '3'
+services:
+  api:
+    build: ./api
+    image: drf-tegakinum-image
+    container_name: tegakinum-api
+    ports:
+      - '8000:8000'
+      - '8888:8888'
+    volumes:
+      - ./api/:/usr/src/tegakinum/api/
+    tty: true
+  web:
+    build: ./web
+    image: vue-tegakinum-image
+    container_name: tegakinum-web
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./web/:/usr/src/tegakinum/web/
+    tty: true
