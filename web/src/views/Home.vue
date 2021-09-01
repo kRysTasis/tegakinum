@@ -1,18 +1,26 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="home">
+        <DrawArea/>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+    import DrawArea from '@/components/DrawArea'
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'Home',
+        components: {
+            DrawArea
+        },
+        data: () => ({
+        }),
+        created () {
+        },
+        computed: {
+        },
+        methods: {
+        },
+    }
 </script>
+<style lang="scss scoped">
+</style>

@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'django_filters',
     'tegakinum.apps.TegakinumConfig',
-    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -147,16 +146,22 @@ logging.basicConfig(
     format = '''%(levelname)s %(asctime)s %(pathname)s:%(funcName)s 行数:%(lineno)s:%(lineno)s
     %(message)s''')
 
+if DEBUG:
+    INSTALLED_APPS += ['corsheaders']
+    MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
+    CORS_ORIGIN_WHITELIST = (
+        'http://localhost:8080',
+    )
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-from corsheaders.defaults import default_headers
-
-CORS_ALLOW_HEADERS = default_headers + (
-    'access-control-allow-origin',
-)
-
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_ALLOW_ALL = True
+#
+# from corsheaders.defaults import default_headers
+#
+# CORS_ALLOW_HEADERS = default_headers + (
+#     'access-control-allow-origin',
+# )
+#
+# CORS_ALLOW_CREDENTIALS = True
 
 APP_NAME = 'tegakinum'
 MODEL_FILE_PATH = os.path.join(BASE_DIR, APP_NAME, 'my_cnn.h5')
