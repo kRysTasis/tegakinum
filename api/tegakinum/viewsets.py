@@ -43,45 +43,28 @@ class PredictViewSet(viewsets.ModelViewSet):
 
     @action(methods=['POST'], detail=False)
     def getPredict(self, request):
-        binary = None
+        binary = ''
 
         for k, v in dict(request.data).items():
             binary = json.loads(k + v[0])['data'].replace(' ', '+')
-
-        if binary == None:
-            return Response({
-                'status': 'failure'
-            })
 
         binary += '=' * (-len(binary) % 4)
         img_binary = base64.b64decode(binary)
         img = Image.open(BytesIO(img_binary))
         newImg = Image.new("RGB", img.size, (255, 255, 255))
         newImg.paste(img, mask=img.split()[3])
-        newImg.save(os.path.join(settings.BASE_DIR, settings.APP_NAME, 'prev.png'), 'png')
 
         model_file_path = settings.MODEL_FILE_PATH
         model = keras.models.load_model(model_file_path)
 
-        # newImg = Image.open(os.path.join(settings.BASE_DIR, settings.APP_NAME, 'prev.png'))
-        newImg = newImg.resize((28, 28))
-        newImg = newImg.convert('RGB')
-        newImg = ImageOps.invert(newImg)
-        newImg.save(os.path.join(settings.BASE_DIR, settings.APP_NAME, 'prev.png'), 'png')
+        newImg = ImageOps.invert(
+            newImg.resize((28, 28)).convert('RGB')).convert('L')
 
-        newImg = newImg.convert('L')
-
-        ar = np.array(newImg)
-        ar = ar / 255.0
-        ar = ar.reshape(-1, 28, 28, 1)
-        logger.debug(ar)
-        logger.debug(ar.shape)
-
+        ar = (np.array(newImg) / 255.0).reshape(-1, 28, 28, 1)
 
         result = model.predict(ar).tolist()
+        # result = {i:'{:.2f}'.format(v) for i, v in enumerate(result[0])}
         result = ['{:.2f}'.format(i) for i in result[0]]
-        logger.debug('★★')
-        logger.debug(result)
 
         return Response({
             'status': 'success',

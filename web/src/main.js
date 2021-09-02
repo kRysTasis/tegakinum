@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import http from '@/plugins/http'
+import VueApexCharts from 'vue-apexcharts'
 import vuetify from './plugins/vuetify'
 import Vuetify from 'vuetify'
 import Vuesax from 'vuesax'
@@ -17,6 +18,9 @@ Vue.use(http)
 Vue.use(Vuesax)
 Vue.use(VueSession)
 Vue.use(Vuetify)
+Vue.use(VueApexCharts)
+
+Vue.component('VueApexCharts', VueApexCharts)
 
 new Vue({
   router,
