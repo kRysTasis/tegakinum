@@ -1,7 +1,9 @@
 version: '3'
 services:
   api:
-    build: ./api
+    build:
+      context: ./api
+      dockerfile: Dockerfile_env
     image: drf-tegakinum-image
     container_name: tegakinum-api
     ports:

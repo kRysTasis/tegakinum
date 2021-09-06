@@ -1,4 +1,4 @@
-import { Home } from '@/views/index'
+import { Home, NotFound } from '@/views/index'
 
 const routes = [
     {
@@ -8,6 +8,11 @@ const routes = [
         meta: {
             description: 'ホーム'
         }
+    },
+    {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound
     }
 ]
 

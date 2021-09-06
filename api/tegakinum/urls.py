@@ -8,5 +8,4 @@ router.register('predict', viewsets.PredictViewSet)
 app_name = 'tegakinum'
 urlpatterns = [
     path('', include(router.urls)),
-    # path('predict/', views.PredictView.as_view(), name='predict'),
 ]

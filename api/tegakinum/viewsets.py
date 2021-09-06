@@ -20,7 +20,6 @@ from .serializers import (
 
 import logging
 import base64
-import cv2
 import tensorflow as tf
 import numpy as np
 import json

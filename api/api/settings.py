@@ -1,21 +1,33 @@
 from pathlib import Path
 import os
 import logging
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
+env = environ.Env()
+env.read_env('.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'pev#4y_j_@oe%d^&e84$(ad^1ez5!jh237hn2(dksc&x#95h^a'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ['DJANGO_ENV'] == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ['*']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['localhost']
 
-ALLOWED_HOSTS = ['*']
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = '''%(levelname)s %(asctime)s %(pathname)s:%(funcName)s:%(lineno)s
+    %(message)s''')
 
 
 # Application definition
@@ -70,7 +82,7 @@ ROOT_URLCONF = 'api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,17 +146,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = os.environ['SENDGRID_API_KEY']
+EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-logging.basicConfig(
-    level = logging.DEBUG,
-    format = '''%(levelname)s %(asctime)s %(pathname)s:%(funcName)s 行数:%(lineno)s:%(lineno)s
-    %(message)s''')
 
 if DEBUG:
     INSTALLED_APPS += ['corsheaders']
@@ -152,16 +165,33 @@ if DEBUG:
     CORS_ORIGIN_WHITELIST = (
         'http://localhost:8080',
     )
+else:
+    INSTALLED_APPS += [
+        'cloudinary',
+        'cloudinary_storage',
+    ]
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    import dj_database_url
+    db_from_env = dj_database_url.config(default=DATABASE_URL, ssl_require=True)
+    DATABASES['default'].update(db_from_env)
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ['CLOUD_NAME'],
+        'API_KEY':  os.environ['CLOUDINARY_API_KEY'],
+        'API_SECRET': os.environ['CLOUDINARY_API_SECRET']
+    }
 
-# CORS_ORIGIN_ALLOW_ALL = True
-#
-# from corsheaders.defaults import default_headers
-#
-# CORS_ALLOW_HEADERS = default_headers + (
-#     'access-control-allow-origin',
-# )
-#
-# CORS_ALLOW_CREDENTIALS = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+CORS_ORIGIN_ALLOW_ALL = True
+
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = default_headers + (
+    'access-control-allow-origin',
+)
+
+CORS_ALLOW_CREDENTIALS = True
 
 APP_NAME = 'tegakinum'
 MODEL_FILE_PATH = os.path.join(BASE_DIR, APP_NAME, 'my_cnn.h5')

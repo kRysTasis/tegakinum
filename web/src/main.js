@@ -4,8 +4,7 @@ import router from './router'
 import store from './store'
 import http from '@/plugins/http'
 import VueApexCharts from 'vue-apexcharts'
-import vuetify from './plugins/vuetify'
-import Vuetify from 'vuetify'
+import vuetify from '@/plugins/vuetify'
 import Vuesax from 'vuesax'
 import VueSession from 'vue-session'
 import 'vuesax/dist/vuesax.css'
@@ -17,7 +16,6 @@ Vue.config.productionTip = false
 Vue.use(http)
 Vue.use(Vuesax)
 Vue.use(VueSession)
-Vue.use(Vuetify)
 Vue.use(VueApexCharts)
 
 Vue.component('VueApexCharts', VueApexCharts)

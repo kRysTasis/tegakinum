@@ -1,0 +1,21 @@
+# api
+__pycache__
+tegakidata
+migrations
+staticfiles
+api/static
+*.sqlite3
+
+# web
+.DS_Store
+node_modules
+dist
+.env
+
+.env.local
+.env.*.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

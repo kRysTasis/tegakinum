@@ -30,21 +30,11 @@ RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install
   conda install -c conda-forge dj-database-url && \
   conda install -c conda-forge django-environ
 
-ENV DJANGO_ENV production
+ENV DJANGO_ENV develop
 ADD . .
 
 RUN python get-pip.py
 RUN pip install tensorflow
-RUN pip install dj3-cloudinary-storage
 
-RUN ls
-RUN python manage.py collectstatic --noinput
-
-MAINTAINER admin
-ENV USER admin
-RUN useradd -m ${USER}
-RUN gpasswd -a ${USER} sudo
-RUN echo "${USER}:test_pass" | chpasswd
-USER ${USER}
-
-CMD gunicorn -b 0.0.0.0:$PORT api.wsgi
+RUN python get-pip.py
+RUN pip install tensorflow

@@ -1,88 +1,90 @@
 <template>
-    <v-card id="drawarea_wrap">
-        <vs-navbar
-            v-model="activeitem"
-        >
-            <div slot="title">
-                <vs-navbar-title>
-                    tegakinum
-                </vs-navbar-title>
-            </div>
+    <div>
+        <v-card id="drawarea_wrap">
+            <vs-navbar
+                v-model="activeitem"
+            >
+                <div slot="title">
+                    <vs-navbar-title>
+                        tegakinum
+                    </vs-navbar-title>
+                </div>
 
-            <vs-navbar-item index="0">
-                <a href="#">Home</a>
-            </vs-navbar-item>
-            <!-- <vs-navbar-item index="1">
-                <a href="#">Sample</a>
-            </vs-navbar-item> -->
-        </vs-navbar>
+                <vs-navbar-item index="0">
+                    <a href="#">Home</a>
+                </vs-navbar-item>
+                <!-- <vs-navbar-item index="1">
+                    <a href="#">Sample</a>
+                </vs-navbar-item> -->
+            </vs-navbar>
 
-        <v-container>
-            <v-row>
-                <v-col cols="6">
-                    <v-card
-                        id="drawarea"
-                        flat
-                    >
-                        <div id="canvas-area">
-                            <canvas
-                                id="myCanvas"
-                                width="400px"
-                                height="400px"
-                                @mousedown="dragStart"
-                                @mouseup="dragEnd"
-                                @mouseout="dragEnd"
-                                @mousemove="draw"
-                                :class="{eraser: canvasMode === 'eraser'}"
-                            ></canvas>
-                        </div>
-                        <div id="tool-area">
-                            <v-btn
-                                id="pen-button"
-                                icon
-                                @click="pen"
-                            ><i class='bx bx-pencil'></i></v-btn>
-                            <v-btn
-                                id="eraser-button"
-                                icon
-                                @click="erase"
-                            ><i class='bx bxs-eraser' ></i></v-btn>
-                            <v-btn
-                                id="clear-button"
-                                icon
-                                @click="clear"
-                            ><i class='bx bx-x'></i></v-btn>
-                            <v-btn
-                                id="predict-button"
-                                icon
-                                @click="predict"
-                            >
-                            <i class='bx bx-bulb'></i>
-                            </v-btn>
-                        </div>
-                    </v-card>
-                </v-col>
-                <v-col cols="6" class="graph">
-                    <VueApexCharts
-                        class="donut"
-                        width="260"
-                        height="260"
-                        type="donut"
-                        :options="chartOptions"
-                        :series="pSeries"
-                    />
-                    <VueApexCharts
-                        class="bar"
-                        width="300"
-                        height="240"
-                        type="bar"
-                        :options="barChartOptions"
-                        :series="series"
-                    />
-                </v-col>
-            </v-row>
-        </v-container>
-    </v-card>
+            <v-container>
+                <v-row>
+                    <v-col cols="6">
+                        <v-card
+                            id="drawarea"
+                            flat
+                        >
+                            <div id="canvas-area">
+                                <canvas
+                                    id="myCanvas"
+                                    width="400px"
+                                    height="400px"
+                                    @mousedown="dragStart"
+                                    @mouseup="dragEnd"
+                                    @mouseout="dragEnd"
+                                    @mousemove="draw"
+                                    :class="{eraser: canvasMode === 'eraser'}"
+                                ></canvas>
+                            </div>
+                            <div id="tool-area">
+                                <v-btn
+                                    id="pen-button"
+                                    icon
+                                    @click="pen"
+                                ><i class='bx bx-pencil'></i></v-btn>
+                                <v-btn
+                                    id="eraser-button"
+                                    icon
+                                    @click="erase"
+                                ><i class='bx bxs-eraser' ></i></v-btn>
+                                <v-btn
+                                    id="clear-button"
+                                    icon
+                                    @click="clear"
+                                ><i class='bx bx-x'></i></v-btn>
+                                <v-btn
+                                    id="predict-button"
+                                    icon
+                                    @click="predict"
+                                >
+                                <i class='bx bx-bulb'></i>
+                                </v-btn>
+                            </div>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="6" class="graph">
+                        <VueApexCharts
+                            class="donut"
+                            width="260"
+                            height="260"
+                            type="donut"
+                            :options="chartOptions"
+                            :series="pSeries"
+                        />
+                        <VueApexCharts
+                            class="bar"
+                            width="300"
+                            height="240"
+                            type="bar"
+                            :options="barChartOptions"
+                            :series="series"
+                        />
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-card>
+    </div>
 </template>
 <script>
     export default {
@@ -165,7 +167,7 @@
             this.context = this.canvas.getContext('2d')
             this.context.lineCap = 'round'
             this.context.lineJoin = 'round'
-            this.context.lineWidth = 5
+            this.context.lineWidth = 25
             this.context.strokeStyle = '#000000'
         },
         beforeUpdate () {
@@ -210,14 +212,14 @@
                 this.canvasMode = 'pen'
                 this.context.lineCap = 'round'
                 this.context.lineJoin = 'round'
-                this.context.lineWidth = 5
+                this.context.lineWidth = 25
                 this.context.strokeStyle = '#000000'
             },
             erase: function () {
                 this.canvasMode = 'eraser'
                 this.context.lineCap = 'square'
                 this.context.lineJoin = 'square'
-                this.context.lineWidth = 30
+                this.context.lineWidth = 35
                 this.context.strokeStyle = '#FFFFFF'
             },
             predict: function () {
