@@ -1,6 +1,8 @@
 # api
 __pycache__
 tegakidata
+etegakidata
+*.npy
 migrations
 staticfiles
 api/static

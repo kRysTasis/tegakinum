@@ -59,6 +59,8 @@ class PredictViewSet(viewsets.ModelViewSet):
         newImg = ImageOps.invert(
             newImg.resize((28, 28)).convert('RGB')).convert('L')
 
+        # newImg.save('newImg.png')
+
         ar = (np.array(newImg) / 255.0).reshape(-1, 28, 28, 1)
 
         result = model.predict(ar).tolist()
